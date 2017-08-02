@@ -299,7 +299,7 @@ module.exports = (robot) ->
         return arr[Math.floor(Math.random()*arr.length)]
 
     robot.respond /vegetable/, (msg) ->
-        randomAdjective = getRandomEntry adjective
+        randomAdjective = getRandomEntry adjectives
         randomVegetable = getRandomEntry vegetables
         randomNoun = getRandomEntry nouns
 
