@@ -299,7 +299,7 @@ module.exports = (robot) ->
         return arr[Math.floor(Math.random()*arr.length)]
 
     capitalizeFirstLetter = (word) ->
-        return word.chartAt(0).toUpperCase() + word.slice(1)
+        return word.charAt(0).toUpperCase() + word.slice(1)
 
     robot.respond /vegetable/, (msg) ->
         randomAdjective = capitalizeFirstLetter(getRandomEntry(adjectives))
