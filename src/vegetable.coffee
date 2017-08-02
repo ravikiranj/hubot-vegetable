@@ -235,4 +235,5 @@ vegetables = [
 module.exports = (robot) ->
     robot.respond /vegetable/, (msg) ->
         randomVegetable = vegetables[Math.floor(Math.random()*vegetables.length)]
-        msg.send "Vegetable = #{randomVegetable}, Wikipedia = https://en.wikipedia.org/wiki/#{randomVegetable}"
+        encodedVegetable = encodeURIComponent(randomVegetable)
+        msg.send "Vegetable = #{randomVegetable}, Wikipedia = https://en.wikipedia.org/wiki/#{encodedVegetable}"
