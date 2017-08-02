@@ -1,8 +1,13 @@
 # Description
 #   Random vegetable
 #
+# Dependencies:
+#   request
+#
 # Configuration:
-#   
+#   HUBOT_FOOD_2_FORK_API_URL
+#   HUBOT_FOOD_2_FORK_API_KEY
+#
 #
 # Commands:
 #   hubot vegetable - responds with random vegetable
@@ -10,6 +15,7 @@
 # Author:
 #   Ravikiran Janardhana <ravikiran.j.127@gmail.com>
 
+# Plugin Data
 adjectives = [
     "adorable",
     "brainy",
@@ -294,19 +300,43 @@ vegetables = [
     "Zucchini"
 ]
 
+# Plugin Code
+request = require 'request'
+
+if not process.env.HUBOT_FOOD_2_FORK_API_URL? or not process.env.HUBOT_FOOD_2_FORK_API_KEY?
+    throw new Error("HUBOT_FOOD_2_FORK_API_{URL,KEY} variables are not defined! Exiting!")
+
 module.exports = (robot) ->
     getRandomEntry = (arr) ->
-        return arr[Math.floor(Math.random()*arr.length)]
+        return arr[Math.floor(Math.random() * arr.length)]
 
     capitalizeFirstLetter = (word) ->
         return word.charAt(0).toUpperCase() + word.slice(1)
 
     robot.respond /vegetable/, (msg) ->
-        randomAdjective = capitalizeFirstLetter(getRandomEntry(adjectives))
         randomVegetable = capitalizeFirstLetter(getRandomEntry(vegetables))
-        randomNoun = capitalizeFirstLetter(getRandomEntry(nouns))
-
         encodedVegetable = encodeURIComponent(randomVegetable)
-        standupVegetable = "#{randomAdjective} #{randomVegetable} of #{randomNoun}"
 
-        msg.send "Vegetable = #{randomVegetable}, Wikipedia = https://en.wikipedia.org/wiki/#{encodedVegetable}, Standup Vegetable = #{standupVegetable}"
+        url = "https://#{process.env.HUBOT_FOOD_2_FORK_API_URL}/api/search?key=#{process.env.HUBOT_FOOD_2_FORK_API_KEY}&q=#{encodedVegetable}&sort=r"
+        request.get url, (error, response, data) ->
+            randomAdjective = capitalizeFirstLetter(getRandomEntry(adjectives))
+            randomNoun = capitalizeFirstLetter(getRandomEntry(nouns))
+            standupVegetable = "#{randomAdjective} #{randomVegetable} of #{randomNoun}"
+            veggieMsg = "Vegetable = #{randomVegetable}, Wikipedia = https://en.wikipedia.org/wiki/#{encodedVegetable}, " +
+                        "Standup Vegetable = #{standupVegetable}"
+
+            if not response or response.statusCode != 200 or not data
+                msg.send veggieMsg
+                return
+
+            try
+                resp = JSON.parse(data)
+                if resp.recipes? and resp.recipes.length > 0 and resp.recipes[0].title? and resp.recipes[0].source_url?
+                    msg.send veggieMsg
+                    recipe = resp.recipes[0]
+                    msg.send "Sample Recipe = #{recipe.title}, Recipe URL = #{recipe.source_url}"
+                else
+                    msg.send veggieMsg
+            catch error
+                robot.logger.error "Food2Fork error stacktrace =", error.stack
+                msg.send veggieMsg
