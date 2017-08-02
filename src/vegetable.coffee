@@ -10,6 +10,54 @@
 # Author:
 #   Ravikiran Janardhana <ravikiran.j.127@gmail.com>
 
+adjectives = [
+    "adorable",
+    "brainy",
+    "cheerful",
+    "delightful",
+    "embarassed",
+    "encouraging",
+    "famous",
+    "fragile",
+    "gigantic",
+    "glamorous",
+    "gorgeous",
+    "handsome",
+    "magnificent",
+    "mysterious",
+    "nutritious",
+    "powerful",
+    "scary",
+    "sparkling",
+    "uninterested",
+    "wandering",
+    "whispering",
+    "zealous"
+]
+
+nouns = [
+    "astuteness",
+    "awareness",
+    "certainty",
+    "coincidence",
+    "comprehension",
+    "despair",
+    "destiny",
+    "doom",
+    "even chance",
+    "fortune",
+    "free will",
+    "inevitability",
+    "intuition",
+    "judgement",
+    "karma",
+    "prudence"
+    "rationality",
+    "serendipity",
+    "understanding",
+    "wisdom",
+]
+
 vegetables = [
     "Ahipa",
     "Amaranth",
@@ -233,7 +281,15 @@ vegetables = [
 ]
 
 module.exports = (robot) ->
+    getRandomEntry = (arr) ->
+        return arr[Math.floor(Math.random()*arr.length)]
+
     robot.respond /vegetable/, (msg) ->
-        randomVegetable = vegetables[Math.floor(Math.random()*vegetables.length)]
+        randomAdjective = getRandomEntry adjective
+        randomVegetable = getRandomEntry vegetables
+        randomNoun = getRandomEntry nouns
+
         encodedVegetable = encodeURIComponent(randomVegetable)
-        msg.send "Vegetable = #{randomVegetable}, Wikipedia = https://en.wikipedia.org/wiki/#{encodedVegetable}"
+        standupVegetable = "#{randomAdjective} #{randomVegetable} of #{randomNoun}"
+
+        msg.send "Vegetable = #{randomVegetable}, Wikipedia = https://en.wikipedia.org/wiki/#{encodedVegetable}, Standup Vegetable = #{standupVegetable}"
