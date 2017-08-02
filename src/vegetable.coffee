@@ -36,26 +36,40 @@ adjectives = [
 ]
 
 nouns = [
+    "absolution",
+    "ascendancy",
     "astuteness",
+    "authority",
     "awareness",
     "certainty",
     "coincidence",
     "comprehension",
     "despair",
     "destiny",
+    "dominance",
     "doom",
     "even chance",
+    "finality",
     "fortune",
     "free will",
+    "happenstance",
     "inevitability",
     "intuition",
     "judgement",
     "karma",
+    "perfection",
+    "prestige",
+    "principality",
     "prudence"
     "rationality",
+    "realization",
     "serendipity",
+    "sublimity",
+    "superiority",
+    "supremacy",
+    "transcendence",
     "understanding",
-    "wisdom",
+    "wisdom"
 ]
 
 vegetables = [

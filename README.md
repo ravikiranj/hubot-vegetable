@@ -21,8 +21,8 @@ Then add **hubot-vegetable** to your `external-scripts.json`:
 ## Sample Interaction
 
 ```
-user1>> hubot hello
-hubot>> hello!
+user1>> hubot vegetable
+hubot>> Vegetable = Tigernut, Wikipedia = https://en.wikipedia.org/wiki/Tigernut
 ```
 
 ## NPM Module
