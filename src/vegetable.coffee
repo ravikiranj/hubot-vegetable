@@ -298,10 +298,13 @@ module.exports = (robot) ->
     getRandomEntry = (arr) ->
         return arr[Math.floor(Math.random()*arr.length)]
 
+    capitalizeFirstLetter = (word) ->
+        return word.chartAt(0).toUpperCase() + word.slice(1)
+
     robot.respond /vegetable/, (msg) ->
-        randomAdjective = getRandomEntry adjectives
-        randomVegetable = getRandomEntry vegetables
-        randomNoun = getRandomEntry nouns
+        randomAdjective = capitalizeFirstLetter(getRandomEntry(adjectives))
+        randomVegetable = capitalizeFirstLetter(getRandomEntry(vegetables))
+        randomNoun = capitalizeFirstLetter(getRandomEntry(nouns))
 
         encodedVegetable = encodeURIComponent(randomVegetable)
         standupVegetable = "#{randomAdjective} #{randomVegetable} of #{randomNoun}"
